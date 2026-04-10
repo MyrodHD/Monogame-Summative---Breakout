@@ -16,13 +16,7 @@ namespace Monogame_Summative___Breakout
             IsMouseVisible = true;
         }
 
-        Paddle paddle;
-
-        Texture2D paddleTexture;
-        Texture2D brickTexture;
-
         Rectangle window;
-        Rectangle paddleRect;
 
         protected override void Initialize()
         {
@@ -31,10 +25,6 @@ namespace Monogame_Summative___Breakout
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
-
-            paddleRect = new Rectangle(400,550,35,35);
-
-            paddle = new Paddle(paddleTexture,paddleRect,window);
 
             base.Initialize();
         }
@@ -45,7 +35,6 @@ namespace Monogame_Summative___Breakout
 
             // TODO: use this.Content to load your game content here
 
-            paddleTexture = Content.Load<Texture2D>("Images/paddle");
         }
 
         protected override void Update(GameTime gameTime)
@@ -67,8 +56,6 @@ namespace Monogame_Summative___Breakout
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-
-            paddle.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
