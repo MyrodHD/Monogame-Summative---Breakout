@@ -10,8 +10,8 @@ namespace Monogame_Summative___Breakout
 {
     public class Ball
     {
-        public Rectangle _ballRect;
-        public Vector2 _ballVelocity;
+        private Rectangle _ballRect;
+        private Vector2 _ballVelocity;
         private Texture2D _texture;
 
         public Ball(Rectangle ballRect, Texture2D texture, Vector2 velocity)

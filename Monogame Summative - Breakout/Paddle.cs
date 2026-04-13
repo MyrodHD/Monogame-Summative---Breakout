@@ -11,11 +11,9 @@ namespace Monogame_Summative___Breakout
 {
     public class Paddle
     {
-        public Rectangle _paddleRect;
+        private Rectangle _paddleRect;
         private Texture2D _texture;
         private float _speed = 10f;
-
-        
 
         public Paddle(Rectangle paddleRect, Texture2D texture)
         {
@@ -29,7 +27,7 @@ namespace Monogame_Summative___Breakout
             {
                 _paddleRect.X -= (int)_speed;
             }
-            if (keyboardState.IsKeyDown(Keys.Right) && _paddleRect.X < 800)
+            if (keyboardState.IsKeyDown(Keys.Right) && _paddleRect.Right < 800)
             {
                 _paddleRect.X += (int)_speed;
             }
@@ -39,7 +37,6 @@ namespace Monogame_Summative___Breakout
         {
             spriteBatch.Draw(_texture, _paddleRect, Color.White); 
         }
-
 
     }
 }

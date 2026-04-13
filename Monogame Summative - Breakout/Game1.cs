@@ -34,10 +34,12 @@ namespace Monogame_Summative___Breakout
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
 
-            paddle = new Paddle(new Rectangle(350,450,100,20), paddleTexture);
-            ball = new Ball(new Rectangle(400,400,15,15), ballTexture, new Vector2(4,4));
+            
 
             base.Initialize();
+
+            paddle = new Paddle(new Rectangle(350, 450, 100, 20), paddleTexture);
+            ball = new Ball(new Rectangle(400, 400, 15, 15), ballTexture, new Vector2(4, 4));
 
             for (int row = 0; row < 5; row++)
             {
@@ -62,25 +64,13 @@ namespace Monogame_Summative___Breakout
         protected override void Update(GameTime gameTime)
         {
             ball.Update();
+
             paddle.Update(Keyboard.GetState());
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
-
-            if (ball._ballRect.Intersects(paddle._paddleRect))
-                ball._ballVelocity.Y *= -1;
-
-            foreach (var brick in bricks)
-            {
-                if (brick._isVisible && ball._ballRect.Intersects(brick._brickRect))
-                {
-                    brick._isVisible = false;
-                    ball._ballVelocity *= -1;
-                    break;
-                }
-            }
 
             base.Update(gameTime);
         }
