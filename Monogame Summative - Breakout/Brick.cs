@@ -11,10 +11,10 @@ namespace Monogame_Summative___Breakout
     public class Brick
     {
 
-        private Rectangle _brickRect;
+        public Rectangle _brickRect;
         private Texture2D _texture;
         private Color _tint;
-        private bool _isVisible;
+        public bool _isVisible;
 
         public Brick (Texture2D texture, Rectangle brickRect, Color color)
         {

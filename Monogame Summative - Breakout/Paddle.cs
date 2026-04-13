@@ -11,9 +11,11 @@ namespace Monogame_Summative___Breakout
 {
     public class Paddle
     {
-        private Rectangle _paddleRect;
+        public Rectangle _paddleRect;
         private Texture2D _texture;
         private float _speed = 10f;
+
+        
 
         public Paddle(Rectangle paddleRect, Texture2D texture)
         {
@@ -37,6 +39,7 @@ namespace Monogame_Summative___Breakout
         {
             spriteBatch.Draw(_texture, _paddleRect, Color.White); 
         }
+
 
     }
 }
