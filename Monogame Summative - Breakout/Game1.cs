@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Monogame_Summative___Breakout
 {
@@ -38,16 +39,20 @@ namespace Monogame_Summative___Breakout
 
             base.Initialize();
 
-            paddle = new Paddle(new Rectangle(350, 450, 100, 20), paddleTexture);
-            ball = new Ball(new Rectangle(400, 400, 15, 15), ballTexture, new Vector2(4, 4));
+            paddle = new Paddle(new Rectangle(350, 500, 100, 20), paddleTexture);
+            ball = new Ball(new Rectangle(400, 400, 15, 15), ballTexture, new Vector2(0, 3));
 
-            for (int row = 0; row < 5; row++)
-            {
-                for (int col = 0; col < 10; col++)
-                {
-                    bricks.Add(new Brick(brickTexture, new Rectangle(col * 80, row * 30, 75, 75), Color.White));
-                }
+            for (int col = 0; col < 10; col++)
+            {  
+               for (int row = 0; row < 10; row++)
+               {
+                 
+                  bricks.Add(new Brick(brickTexture, new Rectangle(col * 75 + 50, row * 55 + 50, 80, 50), Color.White));
+
+               }
+               
             }
+
         }
 
         protected override void LoadContent()
@@ -86,6 +91,14 @@ namespace Monogame_Summative___Breakout
             paddle.Draw(_spriteBatch);
 
             ball.Draw(_spriteBatch);
+
+            for (int row = 0; row < 5; row++)
+            {
+                for (int col = 0; col < 10; col++)
+                {
+                    bricks[row].Draw(_spriteBatch);
+                }
+            }
 
             _spriteBatch.End();
 

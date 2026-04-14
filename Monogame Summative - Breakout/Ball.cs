@@ -10,7 +10,7 @@ namespace Monogame_Summative___Breakout
 {
     public class Ball
     {
-        private Rectangle _ballRect;
+        public Rectangle _ballRect;
         private Vector2 _ballVelocity;
         private Texture2D _texture;
 
@@ -31,6 +31,7 @@ namespace Monogame_Summative___Breakout
             
             if (_ballRect.Y <= 0)
                 _ballVelocity.Y *= -1;
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
