@@ -16,10 +16,13 @@ namespace Monogame_Summative___Breakout
         private Color _tint;
         private bool _isVisible;
 
+        public Rectangle Rect => _brickRect;
+
+
         public Brick (Texture2D texture, Rectangle brickRect, Color color)
         {
-            _brickRect = brickRect;
-            _texture = texture;
+            this._brickRect = brickRect;
+            this._texture = texture;
             _tint = color;
             _isVisible = true;
         }

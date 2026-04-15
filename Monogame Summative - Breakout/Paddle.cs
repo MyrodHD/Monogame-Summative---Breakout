@@ -16,6 +16,8 @@ namespace Monogame_Summative___Breakout
         private Texture2D _texture;
         private float _speed = 10f;
 
+        public Rectangle Rect => _paddleRect;
+
         public Paddle(Rectangle paddleRect, Texture2D texture)
         {
             _paddleRect = paddleRect;

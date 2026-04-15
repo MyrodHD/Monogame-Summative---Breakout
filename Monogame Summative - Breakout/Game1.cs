@@ -30,27 +30,27 @@ namespace Monogame_Summative___Breakout
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            window = new Rectangle(0,0,800,600);
+            window = new Rectangle(0,0,700,500);
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
 
-            
-
             base.Initialize();
 
-            paddle = new Paddle(new Rectangle(350, 500, 100, 20), paddleTexture);
-            ball = new Ball(new Rectangle(400, 400, 15, 15), ballTexture, new Vector2(0, 3));
+            paddle = new Paddle(new Rectangle(275, 475, 100, 20), paddleTexture);
+            ball = new Ball(new Rectangle(310, 400, 15, 15), ballTexture, new Vector2(0, 2));
 
-            for (int col = 0; col < 10; col++)
-            {  
-               for (int row = 0; row < 10; row++)
-               {
-                 
-                  bricks.Add(new Brick(brickTexture, new Rectangle(col * 75 + 50, row * 55 + 50, 80, 50), Color.White));
+            for (int r = 0; r < 5; r++)
+            {
+                for (int c = 0; c < 10; c++)
+                {
+                    int x = 20 + c * (60 + 7);
+                    int y = 30 + r * (20 + 7);
 
-               }
-               
+                    Rectangle rect = new Rectangle(x, y, 60, 20);
+
+                    bricks.Add(new Brick(brickTexture, rect, Color.Red));
+                }
             }
 
         }
@@ -77,6 +77,23 @@ namespace Monogame_Summative___Breakout
 
             // TODO: Add your update logic here
 
+            for (int i = bricks.Count - 1; i >= 0; i--)
+            {
+
+                if (ball.Rect.Intersects(bricks[i].Rect))
+                {
+                    ball.Bounce(false);
+                    bricks.RemoveAt(i);
+                    break;
+                }
+
+                if (ball.Rect.Intersects(paddle.Rect))
+                {
+                    ball.Bounce(false);
+                }
+
+            }
+
             base.Update(gameTime);
         }
 
@@ -92,12 +109,9 @@ namespace Monogame_Summative___Breakout
 
             ball.Draw(_spriteBatch);
 
-            for (int row = 0; row < 5; row++)
+            foreach (Brick b in bricks)
             {
-                for (int col = 0; col < 10; col++)
-                {
-                    bricks[row].Draw(_spriteBatch);
-                }
+                b.Draw(_spriteBatch);
             }
 
             _spriteBatch.End();

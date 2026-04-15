@@ -10,9 +10,11 @@ namespace Monogame_Summative___Breakout
 {
     public class Ball
     {
-        public Rectangle _ballRect;
+        private Rectangle _ballRect;
         private Vector2 _ballVelocity;
         private Texture2D _texture;
+
+        public Rectangle Rect => _ballRect;
 
         public Ball(Rectangle ballRect, Texture2D texture, Vector2 velocity)
         {
@@ -21,17 +23,23 @@ namespace Monogame_Summative___Breakout
             _ballVelocity = velocity;
         }
 
+        public void Bounce(bool horizontal)
+        {
+            if (horizontal)
+                _ballVelocity.X *= -1;
+            else 
+                _ballVelocity.Y *= -1;
+        }
+
         public void Update()
         {
+
             _ballRect.X += (int)_ballVelocity.X;
             _ballRect.Y += (int)_ballVelocity.Y;
 
-            if (_ballRect.X <= 0 || _ballRect.X + _ballRect.Width >= 800)
-                _ballVelocity.X *= -1;
-            
-            if (_ballRect.Y <= 0)
+            if (_ballRect.Y >= 475)
                 _ballVelocity.Y *= -1;
-
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
