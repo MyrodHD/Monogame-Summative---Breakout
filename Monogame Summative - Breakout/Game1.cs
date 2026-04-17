@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -10,6 +11,14 @@ namespace Monogame_Summative___Breakout
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        public enum Screen
+        {
+            Intro,
+            Main,
+            Victory,
+            Lost
+        }
 
         public Game1()
         {
@@ -27,6 +36,20 @@ namespace Monogame_Summative___Breakout
         Ball ball;
         Paddle paddle;
 
+        KeyboardState keyboardState;
+        KeyboardState previousState;
+
+        Screen screen;
+
+        int score;
+        float time;
+
+        SpriteFont scoreFont;
+
+        Color color;
+
+        Random generator;
+
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -35,10 +58,24 @@ namespace Monogame_Summative___Breakout
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
 
+            screen = Screen.Intro;
+
+            score = 0;
+
+            time = 0f;
+
+            generator = new Random();
+
+            color = new Color(
+                  generator.Next(0, 256),
+                  generator.Next(0, 126),
+                  generator.Next(0, 256)
+                );
+
             base.Initialize();
 
             paddle = new Paddle(new Rectangle(275, 475, 100, 20), paddleTexture);
-            ball = new Ball(new Rectangle(310, 400, 15, 15), ballTexture, new Vector2(0, 2));
+            ball = new Ball(new Rectangle(310, 450, 15, 15), ballTexture, new Vector2(0, 2));
 
             for (int r = 0; r < 5; r++)
             {
@@ -49,7 +86,7 @@ namespace Monogame_Summative___Breakout
 
                     Rectangle rect = new Rectangle(x, y, 60, 20);
 
-                    bricks.Add(new Brick(brickTexture, rect, Color.Red));
+                    bricks.Add(new Brick(brickTexture, rect, color));
                 }
             }
 
@@ -64,32 +101,58 @@ namespace Monogame_Summative___Breakout
             paddleTexture = Content.Load<Texture2D>("Images/paddle");
             ballTexture = Content.Load<Texture2D>("Images/circle");
             brickTexture = Content.Load<Texture2D>("Images/rectangle");
+
+            scoreFont = Content.Load<SpriteFont>("Font/ScoreFont");
         }
 
         protected override void Update(GameTime gameTime)
         {
-            ball.Update();
+            ball.Update(paddle);
 
             paddle.Update(Keyboard.GetState());
+
+            keyboardState = Keyboard.GetState();
+            previousState = Keyboard.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
 
-            for (int i = bricks.Count - 1; i >= 0; i--)
+            if (screen == Screen.Intro)
             {
-
-                if (ball.Rect.Intersects(bricks[i].Rect))
+                if (keyboardState.IsKeyDown(Keys.Enter))
                 {
-                    ball.Bounce(false);
-                    bricks.RemoveAt(i);
-                    break;
+                    screen = Screen.Main;
+                }
+            }
+
+            if (screen == Screen.Main)
+            {
+                time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                for (int i = bricks.Count - 1; i >= 0; i--)
+                {
+
+                    if (ball.Rect.Intersects(bricks[i].Rect))
+                    {
+                        ball.Bounce(false);
+                        bricks.RemoveAt(i);
+                        score += 10;
+                        break;
+                    }
+
                 }
 
-                if (ball.Rect.Intersects(paddle.Rect))
+                if (ball.Rect.Left <= 0 || ball.Rect.Right > _graphics.PreferredBackBufferWidth)
+                    ball.Bounce(true);
+
+                if (ball.Rect.Top == _graphics.PreferredBackBufferHeight)
+                    ball.Bounce(true);
+
+                if (bricks.Count == 0)
                 {
-                    ball.Bounce(false);
+                    screen = Screen.Victory;
                 }
 
             }
@@ -105,13 +168,19 @@ namespace Monogame_Summative___Breakout
 
             _spriteBatch.Begin();
 
-            paddle.Draw(_spriteBatch);
-
-            ball.Draw(_spriteBatch);
-
-            foreach (Brick b in bricks)
+            if (screen == Screen.Main)
             {
-                b.Draw(_spriteBatch);
+                paddle.Draw(_spriteBatch);
+
+                ball.Draw(_spriteBatch);
+
+                foreach (Brick b in bricks)
+                {
+                    b.Draw(_spriteBatch);
+                }
+
+                _spriteBatch.DrawString(scoreFont, $"Points: {score}", new Vector2(25,10), Color.White);
+                _spriteBatch.DrawString(scoreFont, (0 - time).ToString("0:00"), new Vector2(650, 10), Color.White);
             }
 
             _spriteBatch.End();

@@ -12,7 +12,7 @@ namespace Monogame_Summative___Breakout
 {
     public class Paddle
     {
-        private Rectangle _paddleRect;
+        public Rectangle _paddleRect;
         private Texture2D _texture;
         private float _speed = 10f;
 
@@ -30,10 +30,15 @@ namespace Monogame_Summative___Breakout
             {
                 _paddleRect.X -= (int)_speed;
             }
-            if (keyboardState.IsKeyDown(Keys.Right) && _paddleRect.Right < 800)
+            if (keyboardState.IsKeyDown(Keys.Right) && _paddleRect.Right < 700)
             {
                 _paddleRect.X += (int)_speed;
             }
+        }
+
+        public bool Intersects(Rectangle rect)
+        {
+            return _paddleRect.Intersects(rect);
         }
 
         public void Draw(SpriteBatch spriteBatch)
