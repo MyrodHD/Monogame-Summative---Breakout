@@ -41,12 +41,14 @@ namespace Monogame_Summative___Breakout
 
             if (paddle.Intersects(_ballRect))
             {
-                _ballVelocity.Y = -_ballVelocity.Y;
+                _ballVelocity.Y = -Math.Abs(_ballVelocity.Y);
 
-                float paddleCentre = paddle._paddleRect.X + (paddle._paddleRect.Width / 2);
-                float ballCentre = _ballRect.X + (_ballRect.Width / 2);
+                _ballRect.Y = paddle._paddleRect.Top - _ballRect.Height;
 
-                float relativeIntresect = (ballCentre - paddleCentre) / (paddle._paddleRect.Width / 2);
+                float paddleCentre = paddle._paddleRect.X + (paddle._paddleRect.Width / 2f);
+                float ballCentre = _ballRect.X + (_ballRect.Width / 2f);
+
+                float relativeIntresect = (ballCentre - paddleCentre) / (paddle._paddleRect.Width / 2f);
 
                 _ballVelocity.X = relativeIntresect * 3;
             }

@@ -66,11 +66,7 @@ namespace Monogame_Summative___Breakout
 
             generator = new Random();
 
-            color = new Color(
-                  generator.Next(0, 256),
-                  generator.Next(0, 126),
-                  generator.Next(0, 256)
-                );
+
 
             base.Initialize();
 
@@ -81,6 +77,13 @@ namespace Monogame_Summative___Breakout
             {
                 for (int c = 0; c < 10; c++)
                 {
+
+                    color = new Color(
+                        generator.Next(0, 256),
+                        generator.Next(0, 126),
+                        generator.Next(0, 256)
+                    );
+
                     int x = 20 + c * (60 + 7);
                     int y = 30 + r * (20 + 7);
 
@@ -134,9 +137,40 @@ namespace Monogame_Summative___Breakout
                 for (int i = bricks.Count - 1; i >= 0; i--)
                 {
 
+                    Rectangle overlap = Rectangle.Intersect(ball.Rect, bricks[i].Rect);
+
                     if (ball.Rect.Intersects(bricks[i].Rect))
                     {
-                        ball.Bounce(false);
+                        Rectangle tempRect = ball.Rect;
+
+
+                        if (overlap.Width < overlap.Height)
+                        {
+                            ball.Bounce(true);
+
+                            if (ball.Rect.Center.X < bricks[i].Rect.Center.X)
+                            {
+                                tempRect.X -= overlap.Width;
+                            }
+                            else
+                            {
+                                tempRect.X += overlap.Width;
+                            }
+                        }
+                        else
+                        {
+                            ball.Bounce(false);
+
+                            if (ball.Rect.Center.Y < bricks[i].Rect.Center.Y)
+                            {
+                                tempRect.Y -= overlap.Height;
+                            }
+                            else
+                            {
+                                tempRect.Y += overlap.Height;
+                            }
+                        }
+
                         bricks.RemoveAt(i);
                         score += 10;
                         break;
@@ -144,11 +178,21 @@ namespace Monogame_Summative___Breakout
 
                 }
 
-                if (ball.Rect.Left <= 0 || ball.Rect.Right > _graphics.PreferredBackBufferWidth)
+                if (ball.Rect.Intersects(paddle.Rect))
                     ball.Bounce(true);
 
-                if (ball.Rect.Top == _graphics.PreferredBackBufferHeight)
+                if (ball.Rect.Left <= 0 || ball.Rect.Right > _graphics.PreferredBackBufferWidth)
                     ball.Bounce(true);
+                    
+
+                if (ball.Rect.Top <= 0)
+                    ball.Bounce(false);
+                
+
+                if (ball.Rect.Top >= 500)
+                {
+                    screen = Screen.Lost;
+                }
 
                 if (bricks.Count == 0)
                 {
