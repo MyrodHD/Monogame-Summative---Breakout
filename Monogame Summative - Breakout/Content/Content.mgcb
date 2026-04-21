@@ -20,6 +20,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/ScoreFont.spritefont
 
+#begin Font/TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/TitleFont.spritefont
+
 #begin Images/circle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -55,4 +62,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/rectangle.png
+
+#begin Images/title_Screen.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/title_Screen.jpg
+
+#begin Sounds/ball_bouce.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/ball_bouce.mp3
+
+#begin Sounds/brick_break.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/brick_break.mp3
 

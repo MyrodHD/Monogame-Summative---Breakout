@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -31,6 +32,7 @@ namespace Monogame_Summative___Breakout
         Texture2D paddleTexture;
         Texture2D ballTexture;
         Texture2D brickTexture;
+        Texture2D titleScreenTexture;
 
         List<Brick> bricks = new List<Brick>();
         Ball ball;
@@ -45,10 +47,17 @@ namespace Monogame_Summative___Breakout
         float time;
 
         SpriteFont scoreFont;
+        SpriteFont titleFont;
 
         Color color;
 
         Random generator;
+
+        SoundEffect brickBreak;
+        SoundEffect ballBounce;
+
+        SoundEffectInstance brickBreakInstance;
+        SoundEffectInstance ballBounceInstance;
 
         protected override void Initialize()
         {
@@ -65,8 +74,6 @@ namespace Monogame_Summative___Breakout
             time = 0f;
 
             generator = new Random();
-
-
 
             base.Initialize();
 
@@ -104,8 +111,15 @@ namespace Monogame_Summative___Breakout
             paddleTexture = Content.Load<Texture2D>("Images/paddle");
             ballTexture = Content.Load<Texture2D>("Images/circle");
             brickTexture = Content.Load<Texture2D>("Images/rectangle");
+            titleScreenTexture = Content.Load<Texture2D>("Images/title_Screen");
 
             scoreFont = Content.Load<SpriteFont>("Font/ScoreFont");
+            titleFont = Content.Load<SpriteFont>("Font/TitleFont");
+
+            brickBreak = Content.Load<SoundEffect>("Sounds/brick_break");
+            ballBounce = Content.Load<SoundEffect>("Sounds/ball_bouce");
+            brickBreakInstance = brickBreak.CreateInstance();
+            ballBounceInstance = ballBounce.CreateInstance();
         }
 
         protected override void Update(GameTime gameTime)
@@ -132,7 +146,13 @@ namespace Monogame_Summative___Breakout
 
             if (screen == Screen.Main)
             {
-                time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (keyboardState.IsKeyDown(Keys.Q))
+                    screen = Screen.Victory;
+
+                if (keyboardState.IsKeyDown(Keys.P))
+                    screen = Screen.Lost;
 
                 for (int i = bricks.Count - 1; i >= 0; i--)
                 {
@@ -143,6 +163,7 @@ namespace Monogame_Summative___Breakout
                     {
                         Rectangle tempRect = ball.Rect;
 
+                        brickBreakInstance.Play();
 
                         if (overlap.Width < overlap.Height)
                         {
@@ -179,7 +200,10 @@ namespace Monogame_Summative___Breakout
                 }
 
                 if (ball.Rect.Intersects(paddle.Rect))
+                {
                     ball.Bounce(true);
+                    ballBounceInstance.Play();
+                }
 
                 if (ball.Rect.Left <= 0 || ball.Rect.Right > _graphics.PreferredBackBufferWidth)
                     ball.Bounce(true);
@@ -206,11 +230,17 @@ namespace Monogame_Summative___Breakout
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
+
+            if (screen == Screen.Intro)
+            {
+                _spriteBatch.Draw(titleScreenTexture,window,Color.White);
+                _spriteBatch.DrawString(titleFont, "Press ENTER to Start", new Vector2(325,375), Color.Black);
+            }
 
             if (screen == Screen.Main)
             {
@@ -224,7 +254,19 @@ namespace Monogame_Summative___Breakout
                 }
 
                 _spriteBatch.DrawString(scoreFont, $"Points: {score}", new Vector2(25,10), Color.White);
-                _spriteBatch.DrawString(scoreFont, (0 - time).ToString("0:00"), new Vector2(650, 10), Color.White);
+                _spriteBatch.DrawString(scoreFont, (0 + time).ToString("000"), new Vector2(650, 10), Color.White);
+            }
+
+            if (screen == Screen.Victory)
+            {
+                _spriteBatch.DrawString(titleFont, "You Win!", new Vector2(275,250), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Score: {score}", new Vector2(250, 295), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Time: {time} seconds", new Vector2(300, 295), Color.White);
+            }
+
+            if (screen == Screen.Lost)
+            {
+                _spriteBatch.DrawString(titleFont, "You Lose!", new Vector2(275, 250), Color.White);
             }
 
             _spriteBatch.End();

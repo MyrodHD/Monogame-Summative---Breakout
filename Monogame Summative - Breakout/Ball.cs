@@ -41,6 +41,7 @@ namespace Monogame_Summative___Breakout
 
             if (paddle.Intersects(_ballRect))
             {
+
                 _ballVelocity.Y = -Math.Abs(_ballVelocity.Y);
 
                 _ballRect.Y = paddle._paddleRect.Top - _ballRect.Height;
