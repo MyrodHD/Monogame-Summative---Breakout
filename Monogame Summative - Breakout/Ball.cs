@@ -52,6 +52,13 @@ namespace Monogame_Summative___Breakout
                 float relativeIntresect = (ballCentre - paddleCentre) / (paddle._paddleRect.Width / 2f);
 
                 _ballVelocity.X = relativeIntresect * 3;
+
+                if (relativeIntresect == 0 || _ballVelocity.X == 0)
+                {
+                    _ballVelocity.X += 1;
+                    _ballVelocity.X *= -1;
+                }
+
             }
 
             if (_isMoving)
@@ -59,12 +66,21 @@ namespace Monogame_Summative___Breakout
 
             if (!_isMoving)
             {
+                _ballRect.X = paddle._paddleRect.X + (paddle._paddleRect.Width / 2) - (_ballRect.Width / 2);
+
+                _ballRect.Y = paddle._paddleRect.Y - _ballRect.Height;
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 {
                     _isMoving = true;
+                    
                     _ballVelocity.X += 2;
-                    _ballVelocity.X *= 1;
+
+                    if(_ballRect.X > 350)
+                        _ballVelocity.X *= 1;
+                    else if (_ballRect.X < 350)
+                        _ballVelocity.X *= -1;
+                        
                     _ballVelocity.Y *= -1;
 
                 }

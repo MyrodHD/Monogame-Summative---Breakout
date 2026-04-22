@@ -148,6 +148,9 @@ namespace Monogame_Summative___Breakout
             {
                 time += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+                if (keyboardState.IsKeyDown(Keys.P))
+                    screen = Screen.Victory;
+
                 for (int i = bricks.Count - 1; i >= 0; i--)
                 {
 
@@ -254,13 +257,16 @@ namespace Monogame_Summative___Breakout
             if (screen == Screen.Victory)
             {
                 _spriteBatch.DrawString(titleFont, "You Win!", new Vector2(275,250), Color.White);
-                _spriteBatch.DrawString(scoreFont, $"Score: {score}", new Vector2(250, 295), Color.White);
-                _spriteBatch.DrawString(scoreFont, $"Time: {time} seconds", new Vector2(300, 295), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Score: {score}", new Vector2(235, 295), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Time: {time.ToString("000")} seconds", new Vector2(335, 295), Color.White);
+                _spriteBatch.DrawString(titleFont, "Thanks for Playing!", new Vector2(215, 315), Color.White);
             }
 
             if (screen == Screen.Lost)
             {
                 _spriteBatch.DrawString(titleFont, "You Lose!", new Vector2(275, 250), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Score: {score}", new Vector2(235, 295), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Time: {time.ToString("000")} seconds", new Vector2(335, 295), Color.White);
             }
 
             _spriteBatch.End();
