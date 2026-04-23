@@ -76,8 +76,9 @@ namespace Monogame_Summative___Breakout
                     
                     _ballVelocity.X += 1;
 
-                    if(_ballRect.X > 350)
+                    if (_ballRect.X > 350)
                         _ballVelocity.X *= 1;
+
                     else if (_ballRect.X < 350)
                         _ballVelocity.X *= -1;
                         

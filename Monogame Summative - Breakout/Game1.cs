@@ -148,9 +148,6 @@ namespace Monogame_Summative___Breakout
             {
                 time += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (keyboardState.IsKeyDown(Keys.P))
-                    screen = Screen.Victory;
-
                 for (int i = bricks.Count - 1; i >= 0; i--)
                 {
 
